@@ -27,7 +27,15 @@ await invoke("pty_close_all").catch(() => {});
 await initLaunchDir();
 
 // Only restore session if we weren't launched with a specific directory argument.
-const session = getLaunchDir() ? null : await loadSession();
+const { isExplicit } = getLaunchDir();
+let session = null;
+if (!isExplicit) {
+  try {
+    session = await loadSession();
+  } catch (err) {
+    console.error("Failed to load session:", err);
+  }
+}
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <App initialSession={session} />,

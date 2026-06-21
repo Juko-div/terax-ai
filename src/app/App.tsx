@@ -138,7 +138,7 @@ export default function App({ initialSession }: { initialSession?: SessionState 
     closeActivePane,
     closePaneByLeaf,
     resetWorkspace,
-  } = useTabs(initialSession, getLaunchDir() ? { cwd: getLaunchDir() } : undefined);
+  } = useTabs(initialSession, getLaunchDir().path ? { cwd: getLaunchDir().path } : undefined);
 
   // Mirror `tabs` into a ref so callbacks scheduled with `setTimeout`
   // (e.g. cdInNewTab) read the latest pane state instead of a stale closure.
@@ -218,6 +218,7 @@ export default function App({ initialSession }: { initialSession?: SessionState 
     markBooted,
     setActiveSpaceForNewTabs,
     adoptWorkspaceEnv,
+    restoredSession: !!initialSession,
   });
 
   useSpacePersistence({
